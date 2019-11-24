@@ -1,3 +1,6 @@
+// credit to Matt Hackett!!
+// http://www.lostdecadegames.com/how-to-make-a-simple-html5-canvas-game/
+
 const startGame = () => {
   // Create the canvas
   var canvas = document.getElementById("game-canvas");
@@ -20,6 +23,9 @@ const startGame = () => {
     heroReady = true;
   };
   heroImage.src = "images/hero.png";
+  // Hero's a little too big...
+  heroImage.width = 18;
+  heroImage.height = 35;
 
   // Monster image
   var monsterReady = false;
@@ -38,6 +44,54 @@ const startGame = () => {
 
   // Handle keyboard controls
   var keysDown = {};
+
+  // addtional game buttons
+  const upButton = document.getElementById("up-arrow");
+  const leftButton = document.getElementById("left-arrow");
+  const rightButton = document.getElementById("right-arrow");
+  const downButton = document.getElementById("down-arrow");
+
+  const stop = () => {
+    movingUp = false;
+    movingLeft = false;
+    movingDown = false;
+    movingRight = false;
+  };
+
+  stop();
+
+  const moveUp = () => {
+    movingUp = true;
+  };
+
+  const moveDown = () => {
+    movingDown = true;
+  };
+
+  const moveLeft = () => {
+    movingLeft = true;
+  };
+
+  const moveRight = () => {
+    movingRight = true;
+  };
+
+  upButton.onmousedown = moveUp;
+  upButton.onmouseup = stop;
+  leftButton.onmousedown = moveLeft;
+  leftButton.onmouseup = stop;
+  rightButton.onmousedown = moveRight;
+  rightButton.onmouseup = stop;
+  downButton.onmousedown = moveDown;
+  downButton.onmouseup = stop;
+  upButton.ontouchstart = moveUp;
+  upButton.ontouchend = stop;
+  leftButton.ontouchstart = moveLeft;
+  leftButton.ontouchend = stop;
+  rightButton.ontouchstart = moveRight;
+  rightButton.ontouchend = stop;
+  downButton.ontouchstart = moveDown;
+  downButton.ontouchend = stop;
 
   addEventListener(
     "keydown",
@@ -61,35 +115,39 @@ const startGame = () => {
     hero.y = canvas.height / 2;
 
     // Throw the monster somewhere on the screen randomly
-    monster.x = 32 + Math.random() * (canvas.width - 64);
-    monster.y = 32 + Math.random() * (canvas.height - 64);
+    monster.x =
+      monsterImage.width +
+      Math.random() * (canvas.width - monsterImage.width * 2);
+    monster.y =
+      monsterImage.width +
+      Math.random() * (canvas.height - monsterImage.width * 2);
   };
 
   // Update game objects
   var update = function(modifier) {
-    if (38 in keysDown) {
+    if (38 in keysDown || movingUp) {
       // Player holding up
       hero.y -= hero.speed * modifier;
     }
-    if (40 in keysDown) {
+    if (40 in keysDown || movingDown) {
       // Player holding down
       hero.y += hero.speed * modifier;
     }
-    if (37 in keysDown) {
+    if (37 in keysDown || movingLeft) {
       // Player holding left
       hero.x -= hero.speed * modifier;
     }
-    if (39 in keysDown) {
+    if (39 in keysDown || movingRight) {
       // Player holding right
       hero.x += hero.speed * modifier;
     }
 
     // Are they touching?
     if (
-      hero.x <= monster.x + 32 &&
-      monster.x <= hero.x + 32 &&
-      hero.y <= monster.y + 32 &&
-      monster.y <= hero.y + 32
+      hero.x <= monster.x + heroImage.width &&
+      monster.x <= hero.x + heroImage.width &&
+      hero.y <= monster.y + heroImage.height &&
+      monster.y <= hero.y + heroImage.height
     ) {
       ++monstersCaught;
       reset();
@@ -119,11 +177,8 @@ const startGame = () => {
     }
 
     // Score
-    ctx.fillStyle = "rgb(250, 250, 250)";
-    ctx.font = "24px Helvetica";
-    ctx.textAlign = "left";
-    ctx.textBaseline = "top";
-    ctx.fillText("Cavemen caught: " + monstersCaught, 32, 32);
+    const scoreWrapper = document.getElementById("score-wrapper");
+    scoreWrapper.innerHTML = "Cavemen caught: " + monstersCaught;
   };
 
   // The main game loop

@@ -11,11 +11,43 @@
       name="keywords"
       content="super amazing awesome incredible fantastic cool"
     />
-    <!-- <link rel="stylesheet" type="text/css" href="style.css" /> -->
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <script src="game.js"></script>
+    <script
+      src="https://kit.fontawesome.com/9bf2aeb3dd.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
-    <canvas id="game-canvas"></canvas>
+    <div id="main">
+      <div id="score-wrapper"></div>
+      <div id="game-wrapper">
+        <canvas id="game-canvas"></canvas>
+      </div>
+      <div id="game-buttons">
+        <div id="game-buttons-inner-wrapper">
+          <div id="row1">
+            <i class="game-button fas fa-arrow-alt-circle-up" id="up-arrow"></i>
+          </div>
+          <div id="row2">
+            <i
+              class="game-button fas fa-arrow-alt-circle-left"
+              id="left-arrow"
+            ></i>
+            <i
+              class="game-button fas fa-arrow-alt-circle-right"
+              id="right-arrow"
+            ></i>
+          </div>
+          <div id="row3">
+            <i
+              class="game-button fas fa-arrow-alt-circle-down"
+              id="down-arrow"
+            ></i>
+          </div>
+        </div>
+      </div>
+    </div>
     <footer>
       <div id="validator"></div>
       <script>
@@ -23,6 +55,14 @@
           "validator"
         ).innerHTML = `<a href="http://validator.w3.org/nu/?doc=${window.location.href}" target="_blank">HTML 5 Validation</a>`;
       </script>
+      <div id="credit">
+        <a
+          href="http://www.lostdecadegames.com/how-to-make-a-simple-html5-canvas-game/"
+          target="_blank"
+        >
+          Credit to Matt Hackett</a
+        >
+      </div>
     </footer>
   </body>
 </html>
